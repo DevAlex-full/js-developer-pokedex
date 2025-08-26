@@ -84,6 +84,12 @@
     margin: .5rem;
     padding: 1rem;
     border-radius: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.pokemon:hover {
+    transform: scale(1.02);
 }
 
 .pokemon .number {
@@ -97,6 +103,7 @@
     text-transform: capitalize;
     color: #fff;
     margin-bottom: .25rem;
+    font-weight: bold;
 }
 
 .pokemon .detail {
@@ -127,6 +134,70 @@
     height: 70px;
 }
 
+.pokemon .stats {
+    margin-top: 0.5rem;
+    color: #fff;
+}
+
+.pokemon .stats .stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.2rem 0;
+    font-size: 0.7rem;
+}
+
+.pokemon .stats .stat-label {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.pokemon .stats .stat-value {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 0.1rem 0.3rem;
+    border-radius: 0.5rem;
+    min-width: 30px;
+    text-align: center;
+}
+
+.pokemon .info {
+    margin-top: 0.5rem;
+    color: #fff;
+    font-size: 0.7rem;
+}
+
+.pokemon .info-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.1rem 0;
+}
+
+.pokemon .abilities {
+    margin-top: 0.5rem;
+}
+
+.pokemon .abilities .ability-title {
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: bold;
+    margin-bottom: 0.2rem;
+}
+
+.pokemon .abilities .ability-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem;
+}
+
+.pokemon .abilities .ability {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 0.1rem 0.3rem;
+    font-size: 0.6rem;
+    border-radius: 0.5rem;
+    text-transform: capitalize;
+}
+
 .pagination {
     display: flex;
     flex-direction: row;
@@ -144,6 +215,67 @@
     background-color: #6c79db;
     border: none;
     border-radius: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.pagination button:hover {
+    background-color: #5a67c8;
+}
+
+/* Modal Styles */
+.pokemon-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s;
+}
+
+.pokemon-modal.show {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 2rem;
+    border-radius: 1rem;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    animation: slideIn 0.3s;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #000;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 @media screen and (min-width: 380px) {

@@ -17,9 +17,276 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;500;700&display=swap" rel="stylesheet">
 
-    <!-- Nosso CSS -->
-    <link rel="stylesheet" href="/assets/css/global.css">
-    <link rel="stylesheet" href="/assets/css/pokedex.css">
+    <style>
+        * {
+            font-family: 'Roboto', sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f6f8fc;
+        }
+
+        .content {
+            width: 100vw;
+            height: 100vh;
+            padding: 1rem;
+            background-color: #fff;
+        }
+
+        @media screen and (min-width: 992px) {
+            .content {
+                max-width: 992px;
+                height: auto;
+                margin: 1rem auto;
+                border-radius: 1rem;
+            }
+        }
+
+        .pokemons {
+            display: grid;
+            grid-template-columns: 1fr;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .normal { background-color: #a6a877; }
+        .grass { background-color: #77c850; }
+        .fire { background-color: #ee7f30; }
+        .water { background-color: #678fee; }
+        .electric { background-color: #f7cf2e; }
+        .ice { background-color: #98d5d7; }
+        .ground { background-color: #dfbf69; }
+        .flying { background-color: #a98ff0; }
+        .poison { background-color: #a040a0; }
+        .fighting { background-color: #bf3029; }
+        .psychic { background-color: #f65687; }
+        .dark { background-color: #725847; }
+        .rock { background-color: #b8a137; }
+        .bug { background-color: #a8b720; }
+        .ghost { background-color: #6e5896; }
+        .steel { background-color: #b9b7cf; }
+        .dragon { background-color: #6f38f6; }
+        .fairy { background-color: #f9aec7; }
+
+        .pokemon {
+            display: flex;
+            flex-direction: column;
+            margin: .5rem;
+            padding: 1rem;
+            border-radius: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .pokemon:hover {
+            transform: scale(1.02);
+        }
+
+        .pokemon .number {
+            color: #000;
+            opacity: .3;
+            text-align: right;
+            font-size: .625rem;
+        }
+
+        .pokemon .name {
+            text-transform: capitalize;
+            color: #fff;
+            margin-bottom: .25rem;
+            font-weight: bold;
+        }
+
+        .pokemon .detail {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .pokemon .detail .types {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        .pokemon .detail .types .type {
+            color: #fff;
+            padding: .25rem .5rem;
+            margin: .25rem 0;
+            font-size: .625rem;
+            border-radius: 1rem;
+            filter: brightness(1.1);
+            text-align: center;
+        }
+
+        .pokemon .detail img {
+            max-width: 100%;
+            height: 70px;
+        }
+
+        .pokemon .stats {
+            margin-top: 0.5rem;
+            color: #fff;
+        }
+
+        .pokemon .stats .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0.2rem 0;
+            font-size: 0.7rem;
+        }
+
+        .pokemon .stats .stat-label {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .pokemon .stats .stat-value {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 0.1rem 0.3rem;
+            border-radius: 0.5rem;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .pokemon .info {
+            margin-top: 0.5rem;
+            color: #fff;
+            font-size: 0.7rem;
+        }
+
+        .pokemon .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 0.1rem 0;
+        }
+
+        .pokemon .abilities {
+            margin-top: 0.5rem;
+        }
+
+        .pokemon .abilities .ability-title {
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-bottom: 0.2rem;
+        }
+
+        .pokemon .abilities .ability-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.2rem;
+        }
+
+        .pokemon .abilities .ability {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 0.1rem 0.3rem;
+            font-size: 0.6rem;
+            border-radius: 0.5rem;
+            text-transform: capitalize;
+        }
+
+        .pagination {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 1rem;
+        }
+
+        .pagination button {
+            padding: .25rem .5rem;
+            margin: .25rem 0;
+            font-size: .625rem;
+            color: #fff;
+            background-color: #6c79db;
+            border: none;
+            border-radius: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .pagination button:hover {
+            background-color: #5a67c8;
+        }
+
+        .pokemon-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        .pokemon-modal.show {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 2rem;
+            border-radius: 1rem;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            animation: slideIn 0.3s;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @media screen and (min-width: 380px) {
+            .pokemons {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media screen and (min-width: 576px) {
+            .pokemons {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        @media screen and (min-width: 992px) {
+            .pokemons {
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -37,10 +304,235 @@
         </div>
     </section>
 
-    <!-- Nosso JS -->
-    <script src="/assets/js/pokemon-model.js"></script>
-    <script src="/assets/js/poke-api.js"></script>
-    <script src="/assets/js/main.js"></script>
+    <script>
+        // Pokemon Model
+        class Pokemon {
+            number;
+            name;
+            type;
+            types = [];
+            photo;
+            height;
+            weight;
+            stats = {
+                hp: 0,
+                attack: 0,
+                defense: 0,
+                specialAttack: 0,
+                specialDefense: 0,
+                speed: 0
+            };
+            abilities = [];
+        }
+
+        // PokeAPI
+        const pokeApi = {}
+
+        function convertPokeApiDetailToPokemon(pokeDetail) {
+            const pokemon = new Pokemon()
+            pokemon.number = pokeDetail.id
+            pokemon.name = pokeDetail.name
+
+            const types = pokeDetail.types.map((typeSlot) => typeSlot.type.name)
+            const [type] = types
+
+            pokemon.types = types
+            pokemon.type = type
+
+            pokemon.photo = pokeDetail.sprites.other.dream_world.front_default
+
+            pokemon.height = pokeDetail.height
+            pokemon.weight = pokeDetail.weight
+
+            pokemon.stats.hp = pokeDetail.stats.find(stat => stat.stat.name === 'hp').base_stat
+            pokemon.stats.attack = pokeDetail.stats.find(stat => stat.stat.name === 'attack').base_stat
+            pokemon.stats.defense = pokeDetail.stats.find(stat => stat.stat.name === 'defense').base_stat
+            pokemon.stats.specialAttack = pokeDetail.stats.find(stat => stat.stat.name === 'special-attack').base_stat
+            pokemon.stats.specialDefense = pokeDetail.stats.find(stat => stat.stat.name === 'special-defense').base_stat
+            pokemon.stats.speed = pokeDetail.stats.find(stat => stat.stat.name === 'speed').base_stat
+
+            pokemon.abilities = pokeDetail.abilities.map(ability => ability.ability.name)
+
+            return pokemon
+        }
+
+        pokeApi.getPokemonDetail = (pokemon) => {
+            return fetch(pokemon.url)
+                .then((response) => response.json())
+                .then(convertPokeApiDetailToPokemon)
+        }
+
+        pokeApi.getPokemons = (offset = 0, limit = 5) => {
+            const url = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`
+
+            return fetch(url)
+                .then((response) => response.json())
+                .then((jsonBody) => jsonBody.results)
+                .then((pokemons) => pokemons.map(pokeApi.getPokemonDetail))
+                .then((detailRequests) => Promise.all(detailRequests))
+                .then((pokemonsDetails) => pokemonsDetails)
+        }
+
+        // Main Logic
+        const pokemonList = document.getElementById('pokemonList')
+        const loadMoreButton = document.getElementById('loadMoreButton')
+
+        const maxRecords = 151
+        const limit = 10
+        let offset = 0;
+
+        function convertPokemonToLi(pokemon) {
+            return `
+                <li class="pokemon ${pokemon.type}" onclick="showPokemonDetails(${pokemon.number})">
+                    <span class="number">#${pokemon.number}</span>
+                    <span class="name">${pokemon.name}</span>
+
+                    <div class="detail">
+                        <ol class="types">
+                            ${pokemon.types.map((type) => `<li class="type ${type}">${type}</li>`).join('')}
+                        </ol>
+
+                        <img src="${pokemon.photo}"
+                             alt="${pokemon.name}">
+                    </div>
+
+                    <div class="stats">
+                        <div class="stat-item">
+                            <span class="stat-label">HP</span>
+                            <span class="stat-value">${pokemon.stats.hp}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">ATK</span>
+                            <span class="stat-value">${pokemon.stats.attack}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">DEF</span>
+                            <span class="stat-value">${pokemon.stats.defense}</span>
+                        </div>
+                    </div>
+
+                    <div class="info">
+                        <div class="info-item">
+                            <span>Height:</span>
+                            <span>${(pokemon.height / 10).toFixed(1)}m</span>
+                        </div>
+                        <div class="info-item">
+                            <span>Weight:</span>
+                            <span>${(pokemon.weight / 10).toFixed(1)}kg</span>
+                        </div>
+                    </div>
+
+                    <div class="abilities">
+                        <div class="ability-title">Abilities:</div>
+                        <div class="ability-list">
+                            ${pokemon.abilities.map(ability => `<span class="ability">${ability}</span>`).join('')}
+                        </div>
+                    </div>
+                </li>
+            `
+        }
+
+        function loadPokemonItens(offset, limit) {
+            pokeApi.getPokemons(offset, limit).then((pokemons = []) => {
+                const newHtml = pokemons.map(convertPokemonToLi).join('')
+                pokemonList.innerHTML += newHtml
+            })
+        }
+
+        function showPokemonDetails(pokemonNumber) {
+            fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonNumber}`)
+                .then(response => response.json())
+                .then(pokemonDetail => {
+                    const modal = createPokemonModal(pokemonDetail);
+                    document.body.appendChild(modal);
+                    modal.classList.add('show');
+                    
+                    modal.onclick = (e) => {
+                        if (e.target === modal || e.target.classList.contains('close')) {
+                            modal.remove();
+                        }
+                    }
+                });
+        }
+
+        function createPokemonModal(pokemonDetail) {
+            const modal = document.createElement('div');
+            modal.className = 'pokemon-modal';
+            
+            const types = pokemonDetail.types.map((typeSlot) => typeSlot.type.name);
+            const [primaryType] = types;
+            
+            modal.innerHTML = `
+                <div class="modal-content pokemon ${primaryType}">
+                    <span class="close">&times;</span>
+                    <div style="text-align: center; color: white;">
+                        <h2>#${pokemonDetail.id} ${pokemonDetail.name.charAt(0).toUpperCase() + pokemonDetail.name.slice(1)}</h2>
+                        <img src="${pokemonDetail.sprites.other.dream_world.front_default}" 
+                             alt="${pokemonDetail.name}" style="width: 150px; height: 150px;">
+                        
+                        <div class="types" style="margin: 1rem 0; display: flex; justify-content: center; gap: 0.5rem;">
+                            ${types.map(type => `<span class="type ${type}">${type}</span>`).join('')}
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                            <div>
+                                <h3>Stats</h3>
+                                <div class="stats">
+                                    ${pokemonDetail.stats.map(stat => `
+                                        <div class="stat-item">
+                                            <span class="stat-label">${stat.stat.name.replace('-', ' ').toUpperCase()}</span>
+                                            <span class="stat-value">${stat.base_stat}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3>Info</h3>
+                                <div class="info">
+                                    <div class="info-item">
+                                        <span>Height:</span>
+                                        <span>${(pokemonDetail.height / 10).toFixed(1)}m</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span>Weight:</span>
+                                        <span>${(pokemonDetail.weight / 10).toFixed(1)}kg</span>
+                                    </div>
+                                </div>
+                                
+                                <h3>Abilities</h3>
+                                <div class="abilities">
+                                    <div class="ability-list">
+                                        ${pokemonDetail.abilities.map(ability => 
+                                            `<span class="ability">${ability.ability.name}</span>`
+                                        ).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            return modal;
+        }
+
+        loadPokemonItens(offset, limit)
+
+        loadMoreButton.addEventListener('click', () => {
+            offset += limit
+            const qtdRecordsWithNexPage = offset + limit
+
+            if (qtdRecordsWithNexPage >= maxRecords) {
+                const newLimit = maxRecords - offset
+                loadPokemonItens(offset, newLimit)
+
+                loadMoreButton.parentElement.removeChild(loadMoreButton)
+            } else {
+                loadPokemonItens(offset, limit)
+            }
+        })
+    </script>
 </body>
 
 </html>

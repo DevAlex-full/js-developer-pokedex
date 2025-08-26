@@ -1,4 +1,3 @@
-
 const pokeApi = {}
 
 function convertPokeApiDetailToPokemon(pokeDetail) {
@@ -13,6 +12,21 @@ function convertPokeApiDetailToPokemon(pokeDetail) {
     pokemon.type = type
 
     pokemon.photo = pokeDetail.sprites.other.dream_world.front_default
+
+    // Adicionando altura e peso
+    pokemon.height = pokeDetail.height
+    pokemon.weight = pokeDetail.weight
+
+    // Adicionando stats
+    pokemon.stats.hp = pokeDetail.stats.find(stat => stat.stat.name === 'hp').base_stat
+    pokemon.stats.attack = pokeDetail.stats.find(stat => stat.stat.name === 'attack').base_stat
+    pokemon.stats.defense = pokeDetail.stats.find(stat => stat.stat.name === 'defense').base_stat
+    pokemon.stats.specialAttack = pokeDetail.stats.find(stat => stat.stat.name === 'special-attack').base_stat
+    pokemon.stats.specialDefense = pokeDetail.stats.find(stat => stat.stat.name === 'special-defense').base_stat
+    pokemon.stats.speed = pokeDetail.stats.find(stat => stat.stat.name === 'speed').base_stat
+
+    // Adicionando habilidades
+    pokemon.abilities = pokeDetail.abilities.map(ability => ability.ability.name)
 
     return pokemon
 }
